@@ -1,8 +1,8 @@
 // Navbar.jsx
 
 import { Link } from "react-router-dom";
-import styles from "./Navbar.module.css"; // Import the CSS module
-import profileIcon from "../../assets/images/icons/profile-icon.svg"; // Import the profile icon image
+import styles from "./Navbar.module.css";
+import profileIcon from "../../assets/images/icons/profile-icon.svg";
 
 const Navbar = () => {
   return (
