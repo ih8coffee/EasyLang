@@ -3,7 +3,7 @@
 import DashboardCard from "../components/Dashboard/DashboardCard";
 import "../components/Dashboard/Dashboard.module.css";
 
-const DashboardPage = () => {
+const DashboardManager = () => {
   // Placeholder data
   const outputsPerHourData = [10, 20, 30, 25, 35, 40, 45];
   const dayByDayData = [
@@ -15,11 +15,6 @@ const DashboardPage = () => {
     { day: "Sat", value: 45 },
     { day: "Sun", value: 50 },
   ];
-  const projectOverview = {
-    totalProjects: 10,
-    activeProjects: 5,
-    completedProjects: 3,
-  };
   const personnel = [
     { name: "John Doe", role: "Developer" },
     { name: "Jane Smith", role: "Designer" },
@@ -28,15 +23,9 @@ const DashboardPage = () => {
 
   return (
     <div>
-      <h2>Dashboard</h2>
+      <h2>Chief Editor Dashboard</h2>
       <div className="container">
         <div className="dashboard-container">
-          <DashboardCard title="Project Overview">
-            {/* Placeholder data */}
-            <p>Total Projects: {projectOverview.totalProjects}</p>
-            <p>Active Projects: {projectOverview.activeProjects}</p>
-            <p>Completed Projects: {projectOverview.completedProjects}</p>
-          </DashboardCard>
           <DashboardCard title="Personnel">
             {/* Placeholder data */}
             <ul>
@@ -73,4 +62,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default DashboardManager;

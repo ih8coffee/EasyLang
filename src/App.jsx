@@ -1,17 +1,35 @@
 // App.jsx
 
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
+
+import DashboardWorker from "./pages/DashboardWorker";
+import DashboardManager from "./pages/DashboardManager";
+import DashboardProjectManager from "./pages/DashboardProjectManager";
+import LoginPage from "./pages/LoginPage";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
-import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
     <Router>
-      <Navbar className="navbar" />
+      <Navbar />
       <div className="App">
-        <Dashboard />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard/worker" element={<DashboardWorker />} />
+          <Route path="/dashboard/manager" element={<DashboardManager />} />
+          <Route
+            path="/dashboard/project-manager"
+            element={<DashboardProjectManager />}
+          />
+          <Route path="/" element={<Navigate replace to="/login" />} />
+        </Routes>
         <Footer />
       </div>
     </Router>
