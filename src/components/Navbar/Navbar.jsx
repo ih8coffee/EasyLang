@@ -15,6 +15,7 @@ const Navbar = () => {
   // Handle logout logic here
   const handleLogout = () => {
     // Clear user data from local storage
+    localStorage.removeItem("token");
 
     // Redirect to login page
     navigate("/login");

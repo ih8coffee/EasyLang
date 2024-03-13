@@ -29,6 +29,7 @@
 
 .card form input {
   padding: 10px;
+  color: black;
   border: 1px solid #ccc;
   background-color: #fff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
