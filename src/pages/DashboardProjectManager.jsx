@@ -1,7 +1,89 @@
-// DashboardPage.jsx
-
+import PropTypes from "prop-types";
 import DashboardCard from "../components/Dashboard/DashboardCard";
-import "../components/Dashboard/Dashboard.module.css";
+import { Line } from "react-chartjs-2";
+import {
+  Chart,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+const OutputsPerHourGraph = ({ data }) => {
+  const chartData = {
+    labels: Array.from({ length: data.length }, (_, i) => i + 1),
+    datasets: [
+      {
+        label: "Outputs per Hour",
+        data: data,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      x: {
+        type: "category",
+        labels: chartData.labels,
+      },
+      y: {
+        type: "linear",
+        min: 0,
+      },
+    },
+  };
+
+  return <Line data={chartData} options={options} />;
+};
+
+OutputsPerHourGraph.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.number).isRequired,
+};
+
+const DayByDayGraph = ({ data }) => {
+  const chartData = {
+    labels: data.map(dayData => dayData.day),
+    datasets: [
+      {
+        label: "Day by Day",
+        data: data.map(dayData => dayData.value),
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      x: {
+        type: "category",
+        labels: chartData.labels,
+      },
+      y: {
+        type: "linear",
+        min: 0,
+      },
+    },
+  };
+
+  return <Line data={chartData} options={options} />;
+};
+
+DayByDayGraph.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      day: PropTypes.string.isRequired,
+      value: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
 
 const DashboardProjectManager = () => {
   // Placeholder data
@@ -32,13 +114,12 @@ const DashboardProjectManager = () => {
       <div className="container">
         <div className="dashboard-container">
           <DashboardCard title="Project Overview">
-            {/* Placeholder data */}
             <p>Total Projects: {projectOverview.totalProjects}</p>
             <p>Active Projects: {projectOverview.activeProjects}</p>
             <p>Completed Projects: {projectOverview.completedProjects}</p>
           </DashboardCard>
+
           <DashboardCard title="Personnel">
-            {/* Placeholder data */}
             <ul>
               {personnel.map((person, index) => (
                 <li key={index}>
@@ -47,30 +128,29 @@ const DashboardProjectManager = () => {
               ))}
             </ul>
           </DashboardCard>
+
           <DashboardCard title="Outputs per Hour">
-            {/* Placeholder chart or data */}
-            <ul>
-              {outputsPerHourData.map((output, index) => (
-                <li key={index}>
-                  Hour {index + 1}: {output}
-                </li>
-              ))}
-            </ul>
+            <OutputsPerHourGraph data={outputsPerHourData} />
           </DashboardCard>
+
           <DashboardCard title="Day-by-Day Graph">
-            {/* Placeholder chart or data */}
-            <ul>
-              {dayByDayData.map((dayData, index) => (
-                <li key={index}>
-                  {dayData.day}: {dayData.value}
-                </li>
-              ))}
-            </ul>
+            <DayByDayGraph data={dayByDayData} />
           </DashboardCard>
         </div>
       </div>
     </div>
   );
 };
+
+// Ensure that Chart.js registers the required scales
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default DashboardProjectManager;
