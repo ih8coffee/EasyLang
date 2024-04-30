@@ -1,26 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import profileIcon from "../../assets/images/icons/profile-icon.svg";
 
 const Navbar = () => {
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const navigate = useNavigate();
-
-  // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsDropdownVisible(!isDropdownVisible);
-  };
-
-  // Handle logout logic here
-  const handleLogout = () => {
-    // Clear user data from local storage
-    localStorage.removeItem("token");
-
-    // Redirect to login page
-    navigate("/login");
-  };
-
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbarBrand}>
@@ -38,15 +20,10 @@ const Navbar = () => {
           </Link>
         </li>
       </ul>
-      <div className={styles.profileIcon} onClick={toggleDropdown}>
-        <img src={profileIcon} alt="Profile" />
-        {isDropdownVisible && (
-          <div className={styles.dropdownMenu}>
-            <button onClick={handleLogout} className={styles.dropdownItem}>
-              Logout
-            </button>
-          </div>
-        )}
+      <div className={styles.profileIcon}>
+        <Link to="/profile">
+          <img src={profileIcon} alt="Profile" />
+        </Link>
       </div>
     </nav>
   );

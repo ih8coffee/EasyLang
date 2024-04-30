@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SignCard from "../components/SignPage/SignCard";
+import Button from "../components/Button/Button";
+import styles from "../components/SignPage/LoginPage.module.css";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const PASSWORD_REGEX = /^(?=.*\d).{5,}$/;
@@ -47,8 +49,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <h2>Login Page</h2>
+    <div className={styles.container}>
       <SignCard title="Login">
         <form onSubmit={authenticateUser}>
           <label>Email:</label>
@@ -65,7 +66,9 @@ const LoginPage = () => {
             onChange={e => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Login</button>
+          <Button type="info" onClick={"submit"}>
+            Login
+          </Button>
         </form>
         {error && <p style={{ color: "red" }}>{error}</p>}{" "}
         {/* Render error message if present */}

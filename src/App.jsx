@@ -8,20 +8,21 @@ import "./App.css";
 
 import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage";
-import Navbar from "./components/Navbar/Navbar";
-import Footer from "./components/Footer/Footer";
+import Profile from "./pages/Profile";
+import Workspace from "./pages/Workspace";
 
 function App() {
   return (
     <Router>
-      <Navbar />
       <div className="App">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/workspace" element={<Workspace />} />
           <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route path="*">404 Not Found</Route>
         </Routes>
-        <Footer />
       </div>
     </Router>
   );

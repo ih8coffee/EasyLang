@@ -1,8 +1,12 @@
 /* Dashboard.module.css */
 
 .container {
-  padding: 20px;
+  height: 100vh;
+  padding: 1.5rem 5rem;
+  margin-top: 100px;
 }
-.dashboard-container {
-  display: block;
+.dashboardContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }

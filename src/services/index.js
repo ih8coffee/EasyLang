@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:3000/api/users/";
+const apiUrl = "http://localhost:3000/api";
 
 // Function to make authenticated API requests
 async function fetchUserData() {

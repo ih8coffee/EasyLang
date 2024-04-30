@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import DashboardCard from "../components/Dashboard/DashboardCard";
+import styles from "../components/Dashboard/Dashboard.module.css";
 import { Line } from "react-chartjs-2";
 import {
   Chart,
@@ -111,8 +112,8 @@ const DashboardProjectManager = () => {
   return (
     <div>
       <h2>Project Manager Dashboard</h2>
-      <div className="container">
-        <div className="dashboard-container">
+      <div>
+        <div className={styles.dashboardContainer}>
           <DashboardCard title="Project Overview">
             <p>Total Projects: {projectOverview.totalProjects}</p>
             <p>Active Projects: {projectOverview.activeProjects}</p>

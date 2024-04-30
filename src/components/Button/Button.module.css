@@ -1,0 +1,46 @@
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+.success {
+  background-color: #4caf50;
+}
+
+.success:hover {
+  background-color: #45a049;
+}
+
+.danger {
+  background-color: #f44336;
+}
+
+.danger:hover {
+  background-color: #da190b;
+}
+
+.warning {
+  background-color: #ff9800;
+}
+
+.warning:hover {
+  background-color: #e68a00;
+}
+
+.info {
+  background-color: #2196f3;
+}
+
+.info:hover {
+  background-color: #0b7dda;
+}

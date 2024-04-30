@@ -17,8 +17,45 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  color: rgba(24, 24, 24, 0.87);
 }
 
 body {
   width: 100%;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  border: 1px solid rgba(24, 24, 24, 0.12);
+  border-radius: 4px;
+
+  padding: 8px 16px;
+}
+
+button:hover {
+  background-color: rgba(24, 24, 24, 0.04);
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+.title {
+  display: block;
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.content {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
 }

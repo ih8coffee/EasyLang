@@ -5,7 +5,7 @@ import { apiUrl } from "./index";
 // Function to fetch user data
 export async function fetchUserData(token) {
   try {
-    const response = await fetch(`${apiUrl}`, {
+    const response = await fetch(`${apiUrl}/users/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ export async function fetchUserData(token) {
 // Function to fetch user's own profile
 export async function fetchOwnProfile(token) {
   try {
-    const response = await fetch(`${apiUrl}me`, {
+    const response = await fetch(`${apiUrl}/users/me`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ export async function fetchOwnProfile(token) {
 // Function to update user profile
 export async function updateUserProfile(token, updatedProfile) {
   try {
-    const response = await fetch(`${apiUrl}/me`, {
+    const response = await fetch(`${apiUrl}/users/me`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
