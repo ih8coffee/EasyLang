@@ -1,60 +1,137 @@
 // DashboardPage.jsx
-
+import { useEffect, useState } from "react";
 import DashboardCard from "../components/Dashboard/DashboardCard";
-import "../components/Dashboard/Dashboard.module.css";
+import ProjectCard from "../components/Projects/ProjectCard";
+import ProgressBar from "../components/ProgressBar/ProgressBar";
+import Task from "../components/Tasks/Task";
+import styles from "../components/Dashboard/Dashboard.module.css";
+import { fetchProjectTasks } from "../services/tasks";
+import { fetchOwnProjects } from "../services/projects";
+import { fetchUserById } from "../services/users";
+import Button from "../components/Button/Button";
 
 const DashboardManager = () => {
-  // Placeholder data
-  const outputsPerHourData = [10, 20, 30, 25, 35, 40, 45];
-  const dayByDayData = [
-    { day: "Mon", value: 20 },
-    { day: "Tue", value: 30 },
-    { day: "Wed", value: 25 },
-    { day: "Thu", value: 35 },
-    { day: "Fri", value: 40 },
-    { day: "Sat", value: 45 },
-    { day: "Sun", value: 50 },
-  ];
-  const personnel = [
-    { name: "John Doe", role: "Developer" },
-    { name: "Jane Smith", role: "Designer" },
-    { name: "Tom Brown", role: "Manager" },
-  ];
+  const [projects, setProjects] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const goToWorkspace = taskId => {
+    window.location.href = `/workspace/${taskId}`;
+  };
+
+  const goToProject = projectId => {
+    window.location.href = `/projects/${projectId}`;
+  };
+
+  useEffect(() => {
+    // Fetch tasks and projects when the component mounts
+    async function fetchData() {
+      try {
+        // Fetch tasks
+        const sessionToken = localStorage.getItem("token");
+        if (sessionToken) {
+          // Fetch users using project.userAssigned array
+          const projectsData = await fetchOwnProjects(sessionToken);
+          const tasksData = await fetchProjectTasks(
+            sessionToken,
+            projectsData._id
+          );
+          const usersData = [];
+          for (const project of projectsData) {
+            for (const userId of project.userAssigned) {
+              const userData = await fetchUserById(sessionToken, userId);
+              usersData.push(userData);
+            }
+          }
+          setUsers(usersData);
+          setTasks(tasksData);
+          setProjects(projectsData);
+          console.log(tasksData);
+          setIsLoading(false);
+        } else {
+          console.error("No token found in local session");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <h2>Chief Editor Dashboard</h2>
-      <div className="container">
-        <div className="dashboard-container">
+      <div className={styles.container}>
+        <h2>Chief Editor Dashboard</h2>
+        <div className={styles.dashboardContainer}>
+          <DashboardCard title="Tasks in Progress">
+            {tasks.map(task => {
+              if (!task.inReview && task.state) {
+                return (
+                  <Task
+                    key={task._id}
+                    title={task.taskName}
+                    status="In Progress"
+                  >
+                    {task.description}
+                    <Button
+                      onClick={goToWorkspace.bind(this, task._id)}
+                      type={"success"}
+                    >
+                      Go To Task
+                    </Button>
+                  </Task>
+                );
+              }
+            })}
+          </DashboardCard>
+          <DashboardCard title="Tasks in Review">
+            {tasks.map(task => {
+              if (task.inReview && task.state) {
+                return (
+                  <Task key={task._id} title={task.taskName} status="In Review">
+                    {task.description}
+                    <Button
+                      onClick={goToWorkspace.bind(this, task._id)}
+                      type={"success"}
+                    >
+                      Go To Task
+                    </Button>
+                  </Task>
+                );
+              }
+            })}{" "}
+          </DashboardCard>
+          <DashboardCard title="Projects">
+            {projects.map(project => (
+              <ProjectCard key={project._id} title={project.projectName}>
+                <p>{project.description}</p>
+                <ProgressBar progress={project.progress} />
+                <Button
+                  onClick={goToProject.bind(this, project._id)}
+                  type={"success"}
+                >
+                  Go to Project
+                </Button>
+              </ProjectCard>
+            ))}{" "}
+          </DashboardCard>
           <DashboardCard title="Personnel">
-            {/* Placeholder data */}
-            <ul>
-              {personnel.map((person, index) => (
-                <li key={index}>
-                  {person.name} - {person.role}
-                </li>
-              ))}
-            </ul>
-          </DashboardCard>
-          <DashboardCard title="Outputs per Hour">
-            {/* Placeholder chart or data */}
-            <ul>
-              {outputsPerHourData.map((output, index) => (
-                <li key={index}>
-                  Hour {index + 1}: {output}
-                </li>
-              ))}
-            </ul>
-          </DashboardCard>
-          <DashboardCard title="Day-by-Day Graph">
-            {/* Placeholder chart or data */}
-            <ul>
-              {dayByDayData.map((dayData, index) => (
-                <li key={index}>
-                  {dayData.day}: {dayData.value}
-                </li>
-              ))}
-            </ul>
+            {users.map(user => {
+              return (
+                <div key={user._id} className={styles.userCard}>
+                  <DashboardCard title={`${user.name} ${user.surname}`}>
+                    <p>{user.email}</p>
+                    <p>{user.role}</p>
+                  </DashboardCard>
+                </div>
+              );
+            })}
           </DashboardCard>
         </div>
       </div>

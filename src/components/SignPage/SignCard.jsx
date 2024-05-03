@@ -6,7 +6,7 @@ import styles from "./SignCard.module.css";
 const SignCard = ({ title, children }) => {
   return (
     <div className={styles.card}>
-      <h3>{title}</h3>
+      <h1>{title}</h1>
       {children}
     </div>
   );

@@ -1,0 +1,18 @@
+.progressBarContainer {
+  margin: 20px auto;
+}
+
+.progressBar {
+  height: 20px;
+  background-color: #6dfc94;
+  border-radius: 20px;
+}
+
+.progressBarBackground {
+  background-color: #e8e8e8;
+  border-radius: 20px;
+}
+
+.progressText {
+  margin-top: 5px;
+}

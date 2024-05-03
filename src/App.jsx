@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import Profile from "./pages/Profile";
 import Workspace from "./pages/Workspace";
+import Projects from "./pages/Projects";
 
 function App() {
   return (
@@ -19,8 +20,11 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/projects/:projectId" element={<Projects />} />
           <Route path="/workspace" element={<Workspace />} />
-          <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route path="/workspace/:taskId" element={<Workspace />} />
+          <Route path="/workspace/:projectId" element={<Workspace />} />
+          <Route path="/" element={<Navigate replace to="/dashboard" />} />
           <Route path="*">404 Not Found</Route>
         </Routes>
       </div>

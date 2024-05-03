@@ -8,18 +8,6 @@ const Navbar = () => {
       <div className={styles.navbarBrand}>
         <Link to="/">EasyLang</Link>
       </div>
-      <ul className={styles.navbarNav}>
-        <li className={styles.navItem}>
-          <Link to="/dashboard" className={styles.navLink}>
-            Dashboard
-          </Link>
-        </li>
-        <li className={styles.navItem}>
-          <Link to="/projects" className={styles.navLink}>
-            Projects
-          </Link>
-        </li>
-      </ul>
       <div className={styles.profileIcon}>
         <Link to="/profile">
           <img src={profileIcon} alt="Profile" />

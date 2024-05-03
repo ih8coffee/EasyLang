@@ -1,4 +1,18 @@
 .projectsContainer {
+  padding: 3rem;
+}
+
+.tasksContainer {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.buttonContainer {
+  display: flex;
+  margin-top: 1.5rem;
+}
+
+.buttonContainer Button {
+  margin-right: 1rem;
 }

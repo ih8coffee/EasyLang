@@ -4,7 +4,6 @@ import { fetchOwnProfile } from "../services/users";
 import DashboardWorker from "./DashboardWorker";
 import DashboardManager from "./DashboardManager";
 import DashboardProjectManager from "./DashboardProjectManager";
-import DashboardAdmin from "./DashboardAdmin";
 import styles from "../components/Dashboard/Dashboard.module.css";
 import Navbar from "../components/Navbar/Navbar";
 
@@ -50,9 +49,6 @@ const DashboardPage = () => {
         )}
         {role === "projectManager" && (
           <DashboardProjectManager username={username} email={email} />
-        )}
-        {role === "admin" && (
-          <DashboardAdmin username={username} email={email} />
         )}
       </div>
     </>

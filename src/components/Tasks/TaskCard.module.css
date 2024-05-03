@@ -31,5 +31,6 @@
 
 .taskCard Button {
   display: block;
-  margin-right: 10px;
+  margin-top: 2rem;
+  margin-bottom: 0;
 }

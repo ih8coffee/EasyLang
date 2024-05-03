@@ -1,39 +1,78 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Button from "../components/Button/Button";
 import ProfileCard from "../components/Profile/ProfileCard";
 import styles from "../components/Profile/Profile.module.css";
+import { fetchOwnProfile, updateUserProfile } from "../services/users";
 
 const Profile = () => {
+  //email regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //phone regex
+  const phoneRegex = /^\d{10}$/;
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [editMode, setEditMode] = useState(false);
-  const [phone, setPhone] = useState("123-456-7890");
-  const [email, setEmail] = useState("johndoe@example.com");
+  const [user, setUser] = useState("");
 
+  //Fetch user profile
+  const fetchProfile = async () => {
+    try {
+      const sessionToken = localStorage.getItem("token");
+      if (sessionToken) {
+        const profileData = await fetchOwnProfile(sessionToken);
+        setUser(profileData);
+      } else {
+        console.error("No token found in local session");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Fetch profile data when the component mounts
+  useEffect(() => {
+    fetchProfile();
+    setPhone(user.phone);
+    setEmail(user.email);
+  }, []);
+
+  // Edit contact info
   const handleEditProfile = () => {
     setEditMode(true);
   };
 
-  const handleSaveChanges = () => {
+  // Save changes
+  const handleSaveChanges = async () => {
+    // Here you can add logic to save changes
+    if (!phone.match(phoneRegex) || !email.match(emailRegex)) {
+      alert("Invalid phone or email");
+      return;
+    }
+    const updatedProfile = {
+      ...user,
+      phone: phone,
+      email: email,
+    };
+
+    const sessionToken = localStorage.getItem("token");
+    await updateUserProfile(sessionToken, updatedProfile);
+
+    setUser(updatedProfile);
+
     setEditMode(false);
-    // Here you can add logic to save changes to the backend
   };
 
-  const handleCancelEdit = () => {
+  //cancel {
+  const handleCancel = () => {
     setEditMode(false);
-
-    // Reset the input fields
-    setPhone("123-456-7890");
-    setEmail("johndoe@example.com");
+    fetchProfile();
   };
 
   //Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
-  };
-
-  const changePassword = () => {
-    // Here you can add logic to change the password
   };
 
   return (
@@ -44,11 +83,9 @@ const Profile = () => {
         <div className={styles.profileContainer}>
           <ProfileCard title="Employee Information">
             <p className={styles.title}>First Name</p>
-            <p className={styles.content}>John</p>
+            <p className={styles.content}>{user.name}</p>
             <p className={styles.title}>Last Name</p>
-            <p className={styles.content}>Doe</p>
-            <p className={styles.title}>Role</p>
-            <p className={styles.content}>Worker</p>
+            <p className={styles.content}>{user.surname}</p>
           </ProfileCard>
 
           <ProfileCard title="Contact Information">
@@ -70,9 +107,9 @@ const Profile = () => {
             ) : (
               <>
                 <p className={styles.title}>Phone</p>
-                <p className={styles.content}>{phone}</p>
+                <p className={styles.content}>{user.phone}</p>
                 <p className={styles.title}>Email</p>
-                <p className={styles.content}>{email}</p>
+                <p className={styles.content}>{user.email}</p>
               </>
             )}
             <br />
@@ -81,7 +118,7 @@ const Profile = () => {
                 <Button type={"success"} onClick={handleSaveChanges}>
                   Save Changes
                 </Button>
-                <Button type={"danger"} onClick={handleCancelEdit}>
+                <Button type={"danger"} onClick={handleCancel}>
                   Cancel
                 </Button>
               </>
@@ -100,9 +137,6 @@ const Profile = () => {
           </ProfileCard>
 
           <ProfileCard title="Profile Actions">
-            <Button type={"warning"} onClick={changePassword}>
-              Change Password
-            </Button>
             <Button type={"danger"} onClick={handleLogout}>
               Log Out
             </Button>

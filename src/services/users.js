@@ -19,6 +19,23 @@ export async function fetchUserData(token) {
   }
 }
 
+// Function to fetch user by ID
+export async function fetchUserById(token, userId) {
+  try {
+    const response = await fetch(`${apiUrl}/users/${userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    throw error;
+  }
+}
+
 // Function to fetch user's own profile
 export async function fetchOwnProfile(token) {
   try {

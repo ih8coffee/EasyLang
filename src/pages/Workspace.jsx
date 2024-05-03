@@ -1,46 +1,57 @@
-import { useEffect, useState } from "react";
-import { fetchOwnTasks } from "../services/tasks";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { fetchOwnProfile } from "../services/users";
+import WorkspaceWorker from "./WorkspaceWorker";
+import WorkspaceManager from "./WorkspaceManager";
+import WorkspaceProjectManager from "./WorkspaceProjectManager";
+import styles from "../components/Workspace/Workspace.module.css";
+import Navbar from "../components/Navbar/Navbar";
 
 const Workspace = () => {
-  const [tasks, setTasks] = useState([]);
-  // Removed the declaration and assignment of the 'token' variable
-  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch tasks when the component mounts
-    async function fetchTasks() {
+    const fetchUserProfile = async token => {
       try {
-        // Retrieve token from local session
-        const sessionToken = localStorage.getItem("token");
-        if (sessionToken) {
-          setToken(sessionToken);
-          const tasksData = await fetchOwnTasks(token);
-          setTasks(tasksData);
-        } else {
-          console.error("No token found in local session");
-        }
+        const data = await fetchOwnProfile(token);
+        setUsername(data.username);
+        setEmail(data.email);
+        setRole(data.role);
       } catch (error) {
-        console.error("Error fetching tasks:", error);
+        console.error("Error fetching user profile:", error);
+        // Handle error, such as token expired or invalid
+        localStorage.removeItem("token");
+        navigate("/login");
       }
+    };
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    } else {
+      fetchUserProfile(token);
     }
+  }, [navigate]);
 
-    fetchTasks();
-  }, []); // Empty dependency array ensures useEffect runs only once
-
+  //depending on role, render different dashboard
   return (
-    <div>
-      <h2>Workspace</h2>
-      <h3>Current Task</h3>
-      <ul>
-        {tasks.map(task => (
-          <li key={task._id}>
-            <h4>{task.taskName}</h4>
-            <p>{task.description}</p>
-            <p>Progress: {task.progress}%</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <Navbar />
+      <div className={styles.container}>
+        {role === "worker" && (
+          <WorkspaceWorker username={username} email={email} />
+        )}
+        {role === "manager" && (
+          <WorkspaceManager username={username} email={email} />
+        )}
+        {role === "projectManager" && (
+          <WorkspaceProjectManager username={username} email={email} />
+        )}
+      </div>
+    </>
   );
 };
 

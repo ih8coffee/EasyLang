@@ -13,6 +13,7 @@ export async function fetchOwnTasks(token) {
       },
     });
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching tasks:", error);
@@ -31,6 +32,7 @@ export async function fetchProjectTasks(token, projectID) {
       },
     });
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching project tasks:", error);

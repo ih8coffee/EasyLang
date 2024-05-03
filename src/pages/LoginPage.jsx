@@ -40,7 +40,7 @@ const LoginPage = () => {
         localStorage.setItem("token", data.token);
         navigate("/dashboard");
       } else {
-        setError(data.error); // Set error state with error message
+        setError("Invalid username or password"); // Set error state with error message
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -50,7 +50,8 @@ const LoginPage = () => {
 
   return (
     <div className={styles.container}>
-      <SignCard title="Login">
+      <SignCard title="EasyLang">
+        <p>Login</p>
         <form onSubmit={authenticateUser}>
           <label>Email:</label>
           <input
@@ -70,7 +71,7 @@ const LoginPage = () => {
             Login
           </Button>
         </form>
-        {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+        {error && <section className={styles.error}>{error}</section>}{" "}
         {/* Render error message if present */}
       </SignCard>
     </div>
